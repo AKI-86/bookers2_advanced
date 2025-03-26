@@ -38,9 +38,9 @@
           <tr>
             <td>
               <% if @book.user.profile_image.attached? %>
-                <%= image_tag @book.user.profile_image, size: "100x100" %>
+                <%= image_tag @book.user.profile_image, size: "50x50" %>
               <% else %>
-                <%= image_tag 'default-image.jpg', size: "100x100" %>
+                <%= image_tag 'default-image.jpg', size: "50x50" %>
               <% end %></br>
               <%= link_to @book.user.name, user_path(@book.user) %>
             </td>
@@ -54,6 +54,23 @@
                 <td>
                 <%= link_to "Destroy", book_path(@book), method: :delete, class: "btn btn-sm btn-danger" %>
                 </td>
+              <% end %>
+            </td>
+            <td>
+              <% if @book.favorited_by?(current_user) %>
+                  <p>
+                    <%= link_to book_favorite_path(@book), method: :delete do %>
+                      <%= link_to book_favorite_path(@book), method: :delete do %>
+                        <span style="color: red;">♥</span><span style="color: red;"><%= @book.favorites.count %></span> 
+                      <% end %>
+                    <% end %>
+                  </p>
+                <% else %>
+                <p>
+                  <%= link_to book_favorite_path(@book), method: :post do %>
+                    ♡<%= @book.favorites.count %> 
+                  <% end %>
+                </p>
               <% end %>
             </td>
             <td>
