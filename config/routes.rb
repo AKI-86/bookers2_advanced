@@ -9,6 +9,10 @@ Rails.application.routes.draw do
     root to: 'users#show', as: :authenticated_root
   end
 
-  resources :books, only: [:new, :edit, :create, :index, :show, :destroy, :update]
+  resources :books, only: [:new, :edit, :create, :index, :show, :destroy, :update] do
+    resources :book_comments, only: [:create, :destroy]
+  end
+
   resources :users, only: [:show, :edit, :index, :update]
+
 end

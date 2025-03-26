@@ -35,29 +35,60 @@
       <h1>Book detail</h1>
       <table class="table">
         <tbody>
-          <td>
-            <% if @book.user.profile_image.attached? %>
-              <%= image_tag @book.user.profile_image, size: "100x100" %>
-            <% else %>
-              <%= image_tag 'default-image.jpg', size: "100x100" %>
-            <% end %></br>
-            <%= link_to @book.user.name, user_path(@book.user) %>
-          </td>
-
-          <td><%= link_to @book.title %></td>
-          <td><%= @book.body %></td>
-          <td>
-            <% if @book.user == current_user %>
-              <td>
-              <%= link_to "Edit", edit_book_path(@book), class:"btn btn-sm btn-success" %>
-              </td>
-              <td>
-              <%= link_to "Destroy", book_path(@book), method: :delete, class: "btn btn-sm btn-danger" %>
-              </td>
-            <% end %>
-          </td>
+          <tr>
+            <td>
+              <% if @book.user.profile_image.attached? %>
+                <%= image_tag @book.user.profile_image, size: "100x100" %>
+              <% else %>
+                <%= image_tag 'default-image.jpg', size: "100x100" %>
+              <% end %></br>
+              <%= link_to @book.user.name, user_path(@book.user) %>
+            </td>
+            <td><%= link_to @book.title %></td>
+            <td><%= @book.body %></td>
+            <td>
+              <% if @book.user == current_user %>
+                <td>
+                <%= link_to "Edit", edit_book_path(@book), class:"btn btn-sm btn-success" %>
+                </td>
+                <td>
+                <%= link_to "Destroy", book_path(@book), method: :delete, class: "btn btn-sm btn-danger" %>
+                </td>
+              <% end %>
+            </td>
+            <td>
+              <p>コメント数：<%= @book.book_comments.count %></p>
+            </td>
+          </tr>
         </tbody>
       </table>
+      <tr>
+        <% @book.book_comments.each do |book_comment| %>
+          <td>
+            <% if @book.user.profile_image.attached? %>
+              <%= image_tag @book.user.profile_image, size: "50x50" %>
+            <% else %>
+              <%= image_tag 'default-image.jpg', size: "50x50" %>
+            <% end %>
+                      <td><%= book_comment.comment %></td>
+          <td><% if book_comment.user == current_user %></td>
+          <td>
+            <%= link_to "削除", book_book_comment_path(book_comment.book, book_comment), method: :delete %>
+            <% end %>
+          </td>
+            </br>
+            <%= link_to @book.user.name, user_path(@book.user) %>
+          </td></br>
+        <% end %>
+      </tr>
+      <tr>
+        <div>
+          <%= form_with model: [@book, @book_comment] do |f| %>
+            <%= f.text_area :comment, placeholder: "コメントをここに" %>
+            <%= f.submit "送信する" %>
+          <% end %>
+        </div>
+      </tr>
     </div>
   </div>
 </div>
