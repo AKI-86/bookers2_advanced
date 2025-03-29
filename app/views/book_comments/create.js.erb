@@ -1,0 +1,3 @@
+app/views/book_comments/create.js.erb
+$('#comment_index').html("<%= j(render 'book_comments/index', book: @comment.book) %>");
+$('#comment_textarea').val("");
